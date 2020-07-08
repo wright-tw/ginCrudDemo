@@ -46,7 +46,7 @@ func Logger() *logrus.Logger {
     logger.SetLevel(logrus.DebugLevel)
 
     //设置日志格式
-    logger.SetFormatter(&logrus.TextFormatter{
+    logger.SetFormatter(&logrus.JSONFormatter{
         TimestampFormat: "2006-01-02 15:04:05",
     })
 
@@ -56,7 +56,7 @@ func Logger() *logrus.Logger {
 func Info(log interface{}, Category string) {
     logger := Logger()
     logger.WithFields(logrus.Fields{
-        "Category": Category,
+        "category": Category,
     }).Info(log)
     logger = nil
 }
@@ -64,7 +64,7 @@ func Info(log interface{}, Category string) {
 func Error(log interface{}, Category string) {
     logger := Logger()
     logger.WithFields(logrus.Fields{
-        "Category": Category,
+        "category": Category,
     }).Error(log)
     logger = nil
 }

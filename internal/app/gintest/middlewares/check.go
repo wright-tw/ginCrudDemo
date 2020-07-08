@@ -1,16 +1,14 @@
 package middlewares
 
-import "github.com/gin-gonic/gin"
+import (
+	"gintest/pkg/logger"
+	"github.com/gin-gonic/gin"
+)
 
 func Check(context *gin.Context) {
-
-	context.JSON(200, gin.H{
-		"message": "請求處理前",
-	})
+	logger.Info("請求處理前", "middleware")
 
 	context.Next()
 
-	context.JSON(200, gin.H{
-		"message": "請求處理後",
-	})
+	logger.Info("請求處理後", "middleware")
 }
