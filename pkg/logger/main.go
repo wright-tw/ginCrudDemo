@@ -50,7 +50,8 @@ func NewLogger() *logrus.Logger {
 
     //设置日志格式
     logger.SetFormatter(&logrus.JSONFormatter{
-        TimestampFormat: "2006-01-02 15:04:05",
+        DisableHTMLEscape: true,
+        TimestampFormat:   "2006-01-02 15:04:05",
     })
 
     return logger
