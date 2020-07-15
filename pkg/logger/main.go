@@ -8,7 +8,10 @@ import (
     "time"
 )
 
-func Logger() *logrus.Logger {
+const SERVER = "server"
+const DEFAULT = "default"
+
+func NewLogger() *logrus.Logger {
 
     now := time.Now()
     logFilePath := ""
@@ -20,7 +23,7 @@ func Logger() *logrus.Logger {
         fmt.Println(err.Error())
     }
 
-    logFileName := now.Format("2006-01-02_15") + ".log"
+    logFileName := now.Format("2006-01-02") + ".log"
 
     //日志文件
     fileName := path.Join(logFilePath, logFileName)
@@ -54,7 +57,7 @@ func Logger() *logrus.Logger {
 }
 
 func Info(log interface{}, Category string) {
-    logger := Logger()
+    logger := NewLogger()
     logger.WithFields(logrus.Fields{
         "category": Category,
     }).Info(log)
@@ -62,7 +65,7 @@ func Info(log interface{}, Category string) {
 }
 
 func Error(log interface{}, Category string) {
-    logger := Logger()
+    logger := NewLogger()
     logger.WithFields(logrus.Fields{
         "category": Category,
     }).Error(log)
