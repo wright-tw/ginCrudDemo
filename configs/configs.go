@@ -8,6 +8,6 @@ import (
 func Setting() {
 
 	// 設定時區
-	os.Setenv("TZ", os.Getenv("TIME_ZONE"))
+	os.Setenv("TZ", os.Getenv("APP_TIME_ZONE"))
 
 }

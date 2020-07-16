@@ -21,5 +21,5 @@ func main() {
     logger.Info("路由設定完成", logger.SERVER)
 
     logger.Info("啟動 http server", logger.SERVER)
-    server.Run(":" + os.Getenv("PORT"))
+    server.Run(":" + os.Getenv("APP_PORT"))
 }
