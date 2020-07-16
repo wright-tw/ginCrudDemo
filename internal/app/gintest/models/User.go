@@ -1,14 +1,15 @@
 package models
 
-type IUser interface {
-	GetName(string) string
-}
-
 type User struct {
-	Name   string `form:"name" `
-	Mobile string `form:"mobile" `
+	Id     int64  `json:"id"`
+	Name   string `json:"name"`
+	Mobile string `json:"mobile"`
 }
 
 func (this *User) GetName(name string) string {
 	return this.Name
+}
+
+func (User) TableName() string {
+	return "users"
 }

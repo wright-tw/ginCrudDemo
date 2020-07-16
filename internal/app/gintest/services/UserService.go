@@ -1,22 +1,32 @@
 package services
 
 import (
-	"gintest/internal/app/gintest/models"
+	"gintest/internal/app/gintest/repositories"
 )
 
 type IUserService interface {
-	List() []interface{}
+	List() (interface{}, error)
+	Create(map[string]string) error
+	Update(int, map[string]string) error
+	Delete(int) error
 }
 
 type UserService struct {
-	User models.IUser `inject:""`
+	UserRepo repositories.IUserRepo `inject:""`
 }
 
-func (this *UserService) List() []interface{} {
-	a := []interface{}{}
-	a = append(a, this.User)
-	a = append(a, this.User)
-	a = append(a, this.User)
-	a = append(a, this.User)
-	return a
+func (this *UserService) List() (interface{}, error) {
+	return this.UserRepo.Get()
+}
+
+func (this *UserService) Create(params map[string]string) error {
+	return this.UserRepo.Create(params)
+}
+
+func (this *UserService) Update(id int, params map[string]string) error {
+	return this.UserRepo.Update(id, params)
+}
+
+func (this *UserService) Delete(id int) error {
+	return this.UserRepo.Delete(id)
 }

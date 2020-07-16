@@ -5,9 +5,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type IHomeController interface{}
-
-type HomeController struct{}
+type HomeController struct {
+	BaseController
+}
 
 func (controller *HomeController) Ping(context *gin.Context) {
 	logger.Info("ping~~~", logger.DEFAULT)
