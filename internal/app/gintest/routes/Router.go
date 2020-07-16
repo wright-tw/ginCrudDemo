@@ -12,11 +12,11 @@ type Router struct{}
 
 func (this *Router) Setting(server *gin.Engine) {
 
-	var Container provider.Container
+	var ContainerProvider provider.ContainerProvider
 	var UserController controllers.UserController
 	var HomeController controllers.HomeController
 
-	Container.Injecting(
+	ContainerProvider.Injecting(
 
 		// 控制器
 		&inject.Object{Value: &UserController},
