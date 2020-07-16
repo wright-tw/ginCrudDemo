@@ -1,0 +1,182 @@
+{
+	"info": {
+		"_postman_id": "e4e0e6af-6b4f-49ea-a8ed-9a9b70f6a11b",
+		"name": "gintest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "建立用戶",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "aaad1222ffffe",
+							"type": "text"
+						},
+						{
+							"key": "mobile",
+							"value": "093848484834838",
+							"type": "text"
+						}
+					],
+					"options": {
+						"urlencoded": {}
+					}
+				},
+				"url": {
+					"raw": "{{go_domain}}/users",
+					"host": [
+						"{{go_domain}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "更新用戶",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "hhhe2e2e2",
+							"type": "text"
+						},
+						{
+							"key": "mobile",
+							"value": "123",
+							"type": "text"
+						}
+					],
+					"options": {
+						"urlencoded": {}
+					}
+				},
+				"url": {
+					"raw": "{{go_domain}}/users/6",
+					"host": [
+						"{{go_domain}}"
+					],
+					"path": [
+						"users",
+						"6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "取得用戶列表",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "id",
+							"value": "6",
+							"type": "text"
+						},
+						{
+							"key": "name",
+							"value": "hhh",
+							"type": "text"
+						},
+						{
+							"key": "mobile",
+							"value": "123",
+							"type": "text"
+						}
+					],
+					"options": {
+						"urlencoded": {}
+					}
+				},
+				"url": {
+					"raw": "{{go_domain}}/users",
+					"host": [
+						"{{go_domain}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "刪除用戶",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "hhh",
+							"type": "text"
+						},
+						{
+							"key": "mobile",
+							"value": "123",
+							"type": "text"
+						}
+					],
+					"options": {
+						"urlencoded": {}
+					}
+				},
+				"url": {
+					"raw": "{{go_domain}}/users/28",
+					"host": [
+						"{{go_domain}}"
+					],
+					"path": [
+						"users",
+						"28"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "362af543-6d94-4083-8e30-7ab4771fd253",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "f2c718fc-c138-454e-9e1d-14e7f1620da2",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
