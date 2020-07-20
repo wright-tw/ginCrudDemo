@@ -11,21 +11,29 @@ import (
 const SERVER = "server"
 const DEFAULT = "default"
 
-func NewLogger() *logrus.Logger {
+var Logger *logrus.Logger
+var Date string
+
+func GetLogger() *logrus.Logger {
 
     now := time.Now()
+    nowDate := now.Format("2006-01-02")
+
+    if Date == nowDate && Logger != nil {
+        return Logger
+    }
+
+    // 開資料夾
     logFilePath := ""
     if dir, err := os.Getwd(); err == nil {
         logFilePath = dir + "/logs/"
     }
-
     if err := os.MkdirAll(logFilePath, 0777); err != nil {
         fmt.Println(err.Error())
     }
 
-    logFileName := now.Format("2006-01-02") + ".log"
-
     //日志文件
+    logFileName := nowDate + ".log"
     fileName := path.Join(logFilePath, logFileName)
     if _, err := os.Stat(fileName); err != nil {
         if _, err := os.Create(fileName); err != nil {
@@ -54,21 +62,23 @@ func NewLogger() *logrus.Logger {
         TimestampFormat:   "2006-01-02 15:04:05",
     })
 
+    // 設置單例
+    Logger = logger
+    Date = nowDate
+
     return logger
 }
 
 func Info(log interface{}, Category string) {
-    logger := NewLogger()
+    logger := GetLogger()
     logger.WithFields(logrus.Fields{
         "category": Category,
     }).Info(log)
-    logger = nil
 }
 
 func Error(log interface{}, Category string) {
-    logger := NewLogger()
+    logger := GetLogger()
     logger.WithFields(logrus.Fields{
         "category": Category,
     }).Error(log)
-    logger = nil
 }
