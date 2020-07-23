@@ -8,14 +8,12 @@ import (
 	"os"
 )
 
-type DbProvider struct {
-	dbConnection *gorm.DB
-}
+var dbConnection *gorm.DB
 
-func (this *DbProvider) GetDbConnection() *gorm.DB {
+func GetDbConnection() *gorm.DB {
 
-	if this.dbConnection != nil {
-		return this.dbConnection
+	if dbConnection != nil {
+		return dbConnection
 	}
 
 	user := os.Getenv("MYSQL_USER")
@@ -25,19 +23,19 @@ func (this *DbProvider) GetDbConnection() *gorm.DB {
 	dbName := os.Getenv("MYSQL_DB")
 
 	dbInfoString := fmt.Sprintf("%s:%s@(%s:%s)/%s", user, password, host, port, dbName)
-	dbConnection, dbConErr := gorm.Open("mysql", dbInfoString)
+	connection, dbConErr := gorm.Open("mysql", dbInfoString)
 
 	if dbConErr != nil {
 		logger.Error(dbConErr, logger.SERVER)
 		panic(dbConErr)
 	}
 
-	if dbConnection.Error != nil {
-		logger.Error(dbConnection.Error, logger.SERVER)
-		panic(dbConnection.Error)
+	if connection.Error != nil {
+		logger.Error(connection.Error, logger.SERVER)
+		panic(connection.Error)
 	}
 
-	this.dbConnection = dbConnection
+	dbConnection = connection
 
 	return dbConnection
 }

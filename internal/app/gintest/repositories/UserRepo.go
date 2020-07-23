@@ -13,13 +13,17 @@ type IUserRepo interface {
 	Delete(int) error
 }
 
-type UserRepo struct {
-	Db *gorm.DB `inject:""`
+func NewUserRepo(db *gorm.DB) UserRepo {
+	return UserRepo{Db: db}
 }
 
-func (this *UserRepo) Get() ([]models.User, error) {
-	var Users []models.User
+type UserRepo struct {
+	Db *gorm.DB
+}
 
+func (this UserRepo) Get() ([]models.User, error) {
+
+	var Users []models.User
 	error := this.Db.Order("id desc").Find(&Users).Error
 
 	if error != nil {
@@ -28,7 +32,7 @@ func (this *UserRepo) Get() ([]models.User, error) {
 	return Users, nil
 }
 
-func (this *UserRepo) Create(params map[string]string) error {
+func (this UserRepo) Create(params map[string]string) error {
 	var user models.User
 	user.Mobile = params["mobile"]
 	user.Name = params["name"]
@@ -38,7 +42,7 @@ func (this *UserRepo) Create(params map[string]string) error {
 	return nil
 }
 
-func (this *UserRepo) Update(id int, params map[string]string) error {
+func (this UserRepo) Update(id int, params map[string]string) error {
 
 	affCount := this.Db.Model(models.User{}).
 		Where("id = ?", id).
@@ -52,7 +56,7 @@ func (this *UserRepo) Update(id int, params map[string]string) error {
 	return errors.New("沒有更新到資料")
 }
 
-func (this *UserRepo) Delete(id int) error {
+func (this UserRepo) Delete(id int) error {
 
 	affCount := this.Db.Where("id = ?", id).
 		Delete(models.User{}).

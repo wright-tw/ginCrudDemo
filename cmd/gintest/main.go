@@ -2,7 +2,7 @@ package main
 
 import (
     "gintest/configs"
-    "gintest/internal/app/gintest/routes"
+    "gintest/internal/app/gintest/provider"
     "gintest/pkg/logger"
     "github.com/gin-gonic/gin"
     "os"
@@ -16,7 +16,8 @@ func main() {
     server := gin.Default()
     logger.Info("gin 框架載入完成", logger.SERVER)
 
-    router := routes.Router{}
+    ContainerProvider := provider.ContainerProvider{}
+    router := ContainerProvider.GetInjectedRouter()
     router.Setting(server)
     logger.Info("路由設定完成", logger.SERVER)
 

@@ -1,41 +1,54 @@
 package provider
 
 import (
+	"gintest/internal/app/gintest/controllers"
+	"gintest/internal/app/gintest/models"
 	"gintest/internal/app/gintest/repositories"
+	"gintest/internal/app/gintest/routes"
 	"gintest/internal/app/gintest/services"
-	"gintest/pkg/logger"
-	"github.com/facebookgo/inject"
+	"go.uber.org/dig"
 )
 
 type ContainerProvider struct{}
 
-func (this *ContainerProvider) Injecting(objects ...*inject.Object) {
+var serviceList = []interface{}{
 
-	var container inject.Graph
+	// 控制器
+	controllers.NewUserController,
+	controllers.NewHomeController,
 
-	// service
-	objects = append(objects, &inject.Object{Value: &services.UserService{}})
+	// 服務
+	services.NewUserService,
 
-	// repo
-	objects = append(objects, &inject.Object{Value: &repositories.UserRepo{}})
+	// 資料組合
+	repositories.NewUserRepo,
 
-	// DB 連線
-	DbProvider := DbProvider{}
-	DbConnection := DbProvider.GetDbConnection()
-	objects = append(objects, &inject.Object{Value: DbConnection})
+	// 模型
+	models.NewUser,
 
-	// 控制器 + 底層載入
-	for _, object := range objects {
-		providerErr := container.Provide(object)
-		if providerErr != nil {
-			logger.Error(providerErr, logger.SERVER)
-			panic(providerErr)
+	// 底層基本
+	routes.NewRouter,
+	GetDbConnection,
+}
+
+func (this *ContainerProvider) GetInjectedRouter() *routes.Router {
+
+	container := dig.New()
+
+	for _, function := range serviceList {
+		if provideErr := container.Provide(function); provideErr != nil {
+			panic(provideErr)
 		}
 	}
 
-	populateErr := container.Populate()
-	if populateErr != nil {
-		logger.Error(populateErr, logger.SERVER)
-		panic(populateErr)
+	// 自動注入所有控制器
+	router := &routes.Router{}
+	invokeErr := container.Invoke(func(readyRouter *routes.Router) {
+		router = readyRouter
+	})
+	if invokeErr != nil {
+		panic(invokeErr)
 	}
+
+	return router
 }

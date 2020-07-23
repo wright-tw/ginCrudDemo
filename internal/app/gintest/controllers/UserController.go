@@ -8,12 +8,18 @@ import (
 	"strconv"
 )
 
-type UserController struct {
-	BaseController
-	UserService services.IUserService `inject:""`
+func NewUserController(service services.UserService) UserController {
+	return UserController{
+		UserService: service,
+	}
 }
 
-func (this *UserController) List(context *gin.Context) {
+type UserController struct {
+	BaseController
+	UserService services.IUserService
+}
+
+func (this UserController) List(context *gin.Context) {
 
 	data, error := this.UserService.List()
 	resData := map[string]interface{}{
