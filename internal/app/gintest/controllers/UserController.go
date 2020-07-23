@@ -9,9 +9,7 @@ import (
 )
 
 func NewUserController(service services.UserService) UserController {
-	return UserController{
-		UserService: service,
-	}
+	return UserController{UserService: service}
 }
 
 type UserController struct {
@@ -33,7 +31,7 @@ func (this UserController) List(context *gin.Context) {
 	}
 }
 
-func (this *UserController) Create(context *gin.Context) {
+func (this UserController) Create(context *gin.Context) {
 
 	name := context.PostForm("name")
 	mobile := context.PostForm("mobile")
@@ -49,7 +47,7 @@ func (this *UserController) Create(context *gin.Context) {
 
 }
 
-func (this *UserController) Update(context *gin.Context) {
+func (this UserController) Update(context *gin.Context) {
 
 	idString := context.Param("id")
 	id, typeError := strconv.Atoi(idString)
@@ -71,7 +69,7 @@ func (this *UserController) Update(context *gin.Context) {
 
 }
 
-func (this *UserController) Delete(context *gin.Context) {
+func (this UserController) Delete(context *gin.Context) {
 
 	idString := context.Param("id")
 	id, typeError := strconv.Atoi(idString)

@@ -6,13 +6,6 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-type IUserRepo interface {
-	Get() ([]models.User, error)
-	Create(map[string]string) error
-	Update(int, map[string]string) error
-	Delete(int) error
-}
-
 func NewUserRepo(db *gorm.DB) UserRepo {
 	return UserRepo{Db: db}
 }

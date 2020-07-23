@@ -4,13 +4,6 @@ import (
 	"gintest/internal/app/gintest/repositories"
 )
 
-type IUserService interface {
-	List() (interface{}, error)
-	Create(map[string]string) error
-	Update(int, map[string]string) error
-	Delete(int) error
-}
-
 type UserService struct {
 	UserRepo repositories.IUserRepo
 }
