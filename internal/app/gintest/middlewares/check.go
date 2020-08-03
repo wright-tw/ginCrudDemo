@@ -5,10 +5,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Check(context *gin.Context) {
+func Check(c *gin.Context) {
 	logger.Info("請求處理前", "middleware")
-
-	context.Next()
-
+	c.Next()
 	logger.Info("請求處理後", "middleware")
 }

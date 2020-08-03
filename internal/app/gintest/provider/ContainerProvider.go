@@ -28,11 +28,10 @@ var serviceList = []interface{}{
 
 	// 底層基本
 	routes.NewRouter,
-	GetDbConnection,
+	GetDBConnection,
 }
 
-func (this *ContainerProvider) GetInjectedRouter() *routes.Router {
-
+func (c *ContainerProvider) GetInjectedRouter() *routes.Router {
 	container := dig.New()
 
 	for _, function := range serviceList {

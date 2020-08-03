@@ -8,8 +8,8 @@ import (
 	"strconv"
 )
 
-func NewUserController(service services.UserService) UserController {
-	return UserController{UserService: service}
+func NewUserController(service *services.UserService) *UserController {
+	return &UserController{UserService: service}
 }
 
 type UserController struct {
@@ -17,70 +17,64 @@ type UserController struct {
 	UserService services.IUserService
 }
 
-func (this UserController) List(context *gin.Context) {
-
-	data, error := this.UserService.List()
+func (u *UserController) List(context *gin.Context) {
+	data, error := u.UserService.List()
 	resData := map[string]interface{}{
 		"list": data,
 	}
 
 	if error == nil {
-		context.JSON(http.StatusOK, this.MakeResponse(constants.RES_CODE_SUCCESS, "", resData))
+		context.JSON(http.StatusOK, u.MakeResponse(constants.ResCodeSuccess, "", resData))
 	} else {
-		context.JSON(http.StatusOK, this.MakeResponse(constants.RES_CODE_OTHER, error.Error(), this.EmptyData()))
+		context.JSON(http.StatusOK, u.MakeResponse(constants.ResCodeOther, error.Error(), u.EmptyData()))
 	}
 }
 
-func (this UserController) Create(context *gin.Context) {
-
+func (u *UserController) Create(context *gin.Context) {
 	name := context.PostForm("name")
 	mobile := context.PostForm("mobile")
 	params := map[string]string{"name": name, "mobile": mobile}
 
-	error := this.UserService.Create(params)
+	error := u.UserService.Create(params)
 
 	if error == nil {
-		context.JSON(http.StatusOK, this.MakeResponse(constants.RES_CODE_SUCCESS, "新增成功", this.EmptyData()))
+		context.JSON(http.StatusOK, u.MakeResponse(constants.ResCodeSuccess, "新增成功", u.EmptyData()))
 	} else {
-		context.JSON(http.StatusOK, this.MakeResponse(constants.RES_CODE_OTHER, error.Error(), this.EmptyData()))
+		context.JSON(http.StatusOK, u.MakeResponse(constants.ResCodeOther, error.Error(), u.EmptyData()))
 	}
-
 }
 
-func (this UserController) Update(context *gin.Context) {
-
+func (u *UserController) Update(context *gin.Context) {
 	idString := context.Param("id")
 	id, typeError := strconv.Atoi(idString)
 	if typeError != nil {
-		context.JSON(http.StatusOK, this.MakeResponse(constants.RES_CODE_OTHER, typeError.Error(), this.EmptyData()))
+		context.JSON(http.StatusOK, u.MakeResponse(constants.ResCodeOther, typeError.Error(), u.EmptyData()))
 	}
 
 	params := map[string]string{
 		"mobile": context.PostForm("mobile"),
 		"name":   context.PostForm("name"),
 	}
-	error := this.UserService.Update(id, params)
+	error := u.UserService.Update(id, params)
 
 	if error == nil {
-		context.JSON(http.StatusOK, this.MakeResponse(constants.RES_CODE_SUCCESS, "更新成功", this.EmptyData()))
+		context.JSON(http.StatusOK, u.MakeResponse(constants.ResCodeSuccess, "更新成功", u.EmptyData()))
 	} else {
-		context.JSON(http.StatusOK, this.MakeResponse(constants.RES_CODE_OTHER, error.Error(), this.EmptyData()))
+		context.JSON(http.StatusOK, u.MakeResponse(constants.ResCodeOther, error.Error(), u.EmptyData()))
 	}
-
 }
 
-func (this UserController) Delete(context *gin.Context) {
-
+func (u *UserController) Delete(context *gin.Context) {
 	idString := context.Param("id")
 	id, typeError := strconv.Atoi(idString)
 	if typeError != nil {
-		context.JSON(http.StatusOK, this.MakeResponse(constants.RES_CODE_OTHER, typeError.Error(), this.EmptyData()))
+		context.JSON(http.StatusOK, u.MakeResponse(constants.ResCodeOther, typeError.Error(), u.EmptyData()))
 	}
 
-	error := this.UserService.Delete(id)
+	error := u.UserService.Delete(id)
 	if error == nil {
-		context.JSON(http.StatusOK, this.MakeResponse(constants.RES_CODE_SUCCESS, "刪除成功", this.EmptyData()))
+		context.JSON(http.StatusOK, u.MakeResponse(constants.ResCodeSuccess, "刪除成功", u.EmptyData()))
 	} else {
-		context.JSON(http.StatusOK, this.MakeResponse(constants.RES_CODE_OTHER, error.Error(), this.EmptyData()))
+		context.JSON(http.StatusOK, u.MakeResponse(constants.ResCodeOther, error.Error(), u.EmptyData()))
 	}
 }

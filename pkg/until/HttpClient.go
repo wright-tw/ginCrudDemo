@@ -1,14 +1,16 @@
 package until
 
 import (
+	"context"
 	"io/ioutil"
 	"net/http"
 	"strings"
 )
 
-func CallApi(method string, url string, params string, header map[string]string) (string, error) {
-
+func CallAPI(method string, url string, params string, header map[string]string) (string, error) {
+	ctx := context.Background()
 	request, error := http.NewRequest("POST", url, strings.NewReader(params))
+	request = request.WithContext(ctx)
 	if error != nil {
 		return "", error
 	}
@@ -19,11 +21,10 @@ func CallApi(method string, url string, params string, header map[string]string)
 
 	client := http.Client{}
 	response, error := client.Do(request)
-	defer response.Body.Close()
-
 	if error != nil {
 		return "", error
 	}
+	defer response.Body.Close()
 
 	bodyByte, _ := ioutil.ReadAll(response.Body)
 	bodyString := string(bodyByte)

@@ -6,18 +6,17 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-func NewUserRepo(db *gorm.DB) UserRepo {
-	return UserRepo{Db: db}
+func NewUserRepo(db *gorm.DB) *UserRepo {
+	return &UserRepo{DB: db}
 }
 
 type UserRepo struct {
-	Db *gorm.DB
+	DB *gorm.DB
 }
 
-func (this UserRepo) Get() ([]models.User, error) {
-
+func (u *UserRepo) Get() ([]models.User, error) {
 	var Users []models.User
-	error := this.Db.Order("id desc").Find(&Users).Error
+	error := u.DB.Order("id desc").Find(&Users).Error
 
 	if error != nil {
 		return Users, error
@@ -25,19 +24,18 @@ func (this UserRepo) Get() ([]models.User, error) {
 	return Users, nil
 }
 
-func (this UserRepo) Create(params map[string]string) error {
+func (u *UserRepo) Create(params map[string]string) error {
 	var user models.User
 	user.Mobile = params["mobile"]
 	user.Name = params["name"]
-	if error := this.Db.Create(&user).Error; error != nil {
+	if error := u.DB.Create(&user).Error; error != nil {
 		return error
 	}
 	return nil
 }
 
-func (this UserRepo) Update(id int, params map[string]string) error {
-
-	affCount := this.Db.Model(models.User{}).
+func (u *UserRepo) Update(id int, params map[string]string) error {
+	affCount := u.DB.Model(models.User{}).
 		Where("id = ?", id).
 		Updates(models.User{Name: params["name"], Mobile: params["mobile"]}).
 		RowsAffected
@@ -49,9 +47,8 @@ func (this UserRepo) Update(id int, params map[string]string) error {
 	return errors.New("沒有更新到資料")
 }
 
-func (this UserRepo) Delete(id int) error {
-
-	affCount := this.Db.Where("id = ?", id).
+func (u *UserRepo) Delete(id int) error {
+	affCount := u.DB.Where("id = ?", id).
 		Delete(models.User{}).
 		RowsAffected
 

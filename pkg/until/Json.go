@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 )
 
-func JsonEncode(objcet interface{}) string {
+func JSONEncode(objcet interface{}) string {
 	bytes, _ := json.Marshal(objcet)
 	return string(bytes)
 }

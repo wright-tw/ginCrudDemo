@@ -3,10 +3,11 @@ package controllers
 import (
 	"gintest/pkg/logger"
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
-func NewHomeController() HomeController {
-	return HomeController{}
+func NewHomeController() *HomeController {
+	return &HomeController{}
 }
 
 type HomeController struct {
@@ -15,7 +16,7 @@ type HomeController struct {
 
 func (controller HomeController) Ping(context *gin.Context) {
 	logger.Info("ping~~~", logger.DEFAULT)
-	context.JSON(200, gin.H{
+	context.JSON(http.StatusOK, gin.H{
 		"message": "pong",
 	})
 }

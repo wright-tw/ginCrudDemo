@@ -7,8 +7,8 @@ import (
 )
 
 func NewRouter(
-	userController controllers.UserController,
-	homeController controllers.HomeController,
+	userController *controllers.UserController,
+	homeController *controllers.HomeController,
 ) *Router {
 	return &Router{
 		UserController: userController,
@@ -17,19 +17,18 @@ func NewRouter(
 }
 
 type Router struct {
-	UserController controllers.UserController
-	HomeController controllers.HomeController
+	UserController *controllers.UserController
+	HomeController *controllers.HomeController
 }
 
-func (this *Router) Setting(server *gin.Engine) {
-
+func (r *Router) Setting(server *gin.Engine) {
 	// ping
-	server.GET("ping", this.HomeController.Ping)
+	server.GET("ping", r.HomeController.Ping)
 
 	// crud
 	userGroup := server.Group("users", middlewares.Check)
-	userGroup.GET("", middlewares.Check2, this.UserController.List)
-	userGroup.PUT("/:id", middlewares.Check2, this.UserController.Update)
-	userGroup.POST("", middlewares.Check2, this.UserController.Create)
-	userGroup.DELETE("/:id", middlewares.Check2, this.UserController.Delete)
+	userGroup.GET("", middlewares.Check2, r.UserController.List)
+	userGroup.PUT("/:id", middlewares.Check2, r.UserController.Update)
+	userGroup.POST("", middlewares.Check2, r.UserController.Create)
+	userGroup.DELETE("/:id", middlewares.Check2, r.UserController.Delete)
 }

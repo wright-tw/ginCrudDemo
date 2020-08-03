@@ -4,14 +4,13 @@ import (
 	"fmt"
 	"gintest/pkg/logger"
 	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
+	_ "github.com/jinzhu/gorm/dialects/mysql" // init connection
 	"os"
 )
 
 var dbConnection *gorm.DB
 
-func GetDbConnection() *gorm.DB {
-
+func GetDBConnection() *gorm.DB {
 	if dbConnection != nil {
 		return dbConnection
 	}
@@ -21,7 +20,6 @@ func GetDbConnection() *gorm.DB {
 	host := os.Getenv("MYSQL_HOST")
 	port := os.Getenv("MYSQL_PORT")
 	dbName := os.Getenv("MYSQL_DB")
-
 	dbInfoString := fmt.Sprintf("%s:%s@(%s:%s)/%s", user, password, host, port, dbName)
 	connection, dbConErr := gorm.Open("mysql", dbInfoString)
 
@@ -36,6 +34,5 @@ func GetDbConnection() *gorm.DB {
 	}
 
 	dbConnection = connection
-
 	return dbConnection
 }
