@@ -1,4 +1,4 @@
-package until
+package encode
 
 import (
 	"net/url"
