@@ -2,21 +2,21 @@ package repositories
 
 import (
 	"errors"
+	"gintest/internal/app/gintest/database/mysql"
 	"gintest/internal/app/gintest/models"
-	"github.com/jinzhu/gorm"
 )
 
-func NewUserRepo(db *gorm.DB) *UserRepo {
+func NewUserRepo(db *mysql.DB) *UserRepo {
 	return &UserRepo{DB: db}
 }
 
 type UserRepo struct {
-	DB *gorm.DB
+	DB mysql.IDB
 }
 
 func (u *UserRepo) Get() ([]models.User, error) {
 	var Users []models.User
-	error := u.DB.Order("id desc").Find(&Users).Error
+	error := u.DB.GetConnect().Order("id desc").Find(&Users).Error
 
 	if error != nil {
 		return Users, error
@@ -28,14 +28,14 @@ func (u *UserRepo) Create(params map[string]string) error {
 	var user models.User
 	user.Mobile = params["mobile"]
 	user.Name = params["name"]
-	if error := u.DB.Create(&user).Error; error != nil {
+	if error := u.DB.GetConnect().Create(&user).Error; error != nil {
 		return error
 	}
 	return nil
 }
 
 func (u *UserRepo) Update(id int, params map[string]string) error {
-	affCount := u.DB.Model(models.User{}).
+	affCount := u.DB.GetConnect().Model(models.User{}).
 		Where("id = ?", id).
 		Updates(models.User{Name: params["name"], Mobile: params["mobile"]}).
 		RowsAffected
@@ -48,7 +48,7 @@ func (u *UserRepo) Update(id int, params map[string]string) error {
 }
 
 func (u *UserRepo) Delete(id int) error {
-	affCount := u.DB.Where("id = ?", id).
+	affCount := u.DB.GetConnect().Where("id = ?", id).
 		Delete(models.User{}).
 		RowsAffected
 

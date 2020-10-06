@@ -18,7 +18,7 @@ func main() {
 	ContainerProvider := provider.ContainerProvider{}
 	router := ContainerProvider.GetInjectedRouter()
 	router.Setting(server)
-	logger.Info("路由設定完成", logger.SERVER)
+	logger.Info("路由注入設定完成", logger.SERVER)
 
 	logger.Info("啟動 http server", logger.SERVER)
 	runError := server.Run(":" + os.Getenv("APP_PORT"))

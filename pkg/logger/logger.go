@@ -3,25 +3,61 @@ package logger
 import (
 	"fmt"
 	"github.com/sirupsen/logrus"
+	"io"
 	"os"
 	"path"
 	"time"
 )
 
-const SERVER = "server"
-const DEFAULT = "default"
+// log 類別
+const (
+	SERVER  = "server"
+	DB      = "db"
+	DEFAULT = "default"
+)
 
-var Logger *logrus.Logger
-var Date string
+// Logger 單例物件
+var (
+	Logger *logrus.Logger
+	Date   string
+)
 
 func GetLogger() *logrus.Logger {
 	now := time.Now()
 	nowDate := now.Format("2006-01-02")
 
+	// 取得寫檔IO
+	src := getLogFileWriter(nowDate)
+
+	// 有物件的話重新設定 src
 	if Date == nowDate && Logger != nil {
+		Logger.SetOutput(src)
 		return Logger
 	}
 
+	//实例化
+	logger := logrus.New()
+
+	//设置输出
+	logger.SetOutput(src)
+
+	//设置日志级别
+	logger.SetLevel(logrus.DebugLevel)
+
+	//设置日志格式
+	logger.SetFormatter(&logrus.JSONFormatter{
+		DisableHTMLEscape: true,
+		TimestampFormat:   "2006-01-02 15:04:05",
+	})
+
+	// 設置單例
+	Logger = logger
+	Date = nowDate
+
+	return logger
+}
+
+func getLogFileWriter(nowDate string) io.Writer {
 	// 開資料夾
 	logFilePath := ""
 	if dir, err := os.Getwd(); err == nil {
@@ -46,26 +82,7 @@ func GetLogger() *logrus.Logger {
 		fmt.Println("err", err)
 	}
 
-	//实例化
-	logger := logrus.New()
-
-	//设置输出
-	logger.Out = src
-
-	//设置日志级别
-	logger.SetLevel(logrus.DebugLevel)
-
-	//设置日志格式
-	logger.SetFormatter(&logrus.JSONFormatter{
-		DisableHTMLEscape: true,
-		TimestampFormat:   "2006-01-02 15:04:05",
-	})
-
-	// 設置單例
-	Logger = logger
-	Date = nowDate
-
-	return logger
+	return src
 }
 
 func Info(log interface{}, category string) {

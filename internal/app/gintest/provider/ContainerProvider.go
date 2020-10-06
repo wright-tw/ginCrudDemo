@@ -2,6 +2,7 @@ package provider
 
 import (
 	"gintest/internal/app/gintest/controllers"
+	"gintest/internal/app/gintest/database/mysql"
 	"gintest/internal/app/gintest/models"
 	"gintest/internal/app/gintest/repositories"
 	"gintest/internal/app/gintest/routes"
@@ -28,7 +29,7 @@ var serviceList = []interface{}{
 
 	// 底層基本
 	routes.NewRouter,
-	GetDBConnection,
+	mysql.NewDB,
 }
 
 func (c *ContainerProvider) GetInjectedRouter() *routes.Router {
