@@ -35,16 +35,16 @@ func GetLogger() *logrus.Logger {
 		return Logger
 	}
 
-	//实例化
+	// 实例化
 	logger := logrus.New()
 
-	//设置输出
+	// 设置输出
 	logger.SetOutput(src)
 
-	//设置日志级别
+	// 设置日志级别
 	logger.SetLevel(logrus.DebugLevel)
 
-	//设置日志格式
+	// 设置日志格式
 	logger.SetFormatter(&logrus.JSONFormatter{
 		DisableHTMLEscape: true,
 		TimestampFormat:   "2006-01-02 15:04:05",
@@ -67,7 +67,7 @@ func getLogFileWriter(nowDate string) io.Writer {
 		fmt.Println(err.Error())
 	}
 
-	//日志文件
+	// 日志文件
 	logFileName := nowDate + ".log"
 	fileName := path.Join(logFilePath, logFileName)
 	if _, err := os.Stat(fileName); err != nil {
@@ -76,7 +76,7 @@ func getLogFileWriter(nowDate string) io.Writer {
 		}
 	}
 
-	//写入文件
+	// 写入文件
 	src, err := os.OpenFile(fileName, os.O_APPEND|os.O_WRONLY, os.ModeAppend)
 	if err != nil {
 		fmt.Println("err", err)
