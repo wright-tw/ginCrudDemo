@@ -23,7 +23,12 @@ require github.com/jinzhu/gorm v1.9.14
 require github.com/joho/godotenv v1.3.0
 ```
 
-* DI plugin
+* DI container plugin
 ```
 require go.uber.org/dig v1.10.0
+```
+
+* testing plugin
+```
+require github.com/stretchr/testify v1.6.1
 ```
