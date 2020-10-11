@@ -4,11 +4,11 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-type MockClient struct {
+type Client struct {
 	mock.Mock
 }
 
-func (m *MockClient) CallAPI(method string, url string, params string, header map[string]string) (string, error) {
+func (m *Client) CallAPI(method string, url string, params string, header map[string]string) (string, error) {
 	args := m.Called(
 		method,
 		url,
