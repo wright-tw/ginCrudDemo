@@ -1,4 +1,4 @@
-package encode
+package client
 
 import (
 	"context"
@@ -7,9 +7,15 @@ import (
 	"strings"
 )
 
-func CallAPI(method string, url string, params string, header map[string]string) (string, error) {
+func NewClient() *Client {
+	return &Client{}
+}
+
+type Client struct{}
+
+func (c *Client) CallAPI(method string, url string, params string, header map[string]string) (string, error) {
 	ctx := context.Background()
-	request, error := http.NewRequest("POST", url, strings.NewReader(params))
+	request, error := http.NewRequest(method, url, strings.NewReader(params))
 	request = request.WithContext(ctx)
 	if error != nil {
 		return "", error

@@ -3,7 +3,6 @@ package hash
 import (
 	"crypto/hmac"
 	"crypto/sha1"
-	"fmt"
 )
 
 func HmacWithSha1(str string, key string) []byte {
