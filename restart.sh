@@ -1,2 +1,2 @@
-kill `pidof ./bin/devtools`
-nohup ./bin/devtools > server.log 2>&1 &
+kill `pidof ./bin/gintest`
+nohup ./bin/gintest > server.log 2>&1 &

@@ -17,6 +17,7 @@ require github.com/joho/godotenv v1.3.0
 
 require (
 	github.com/go-redis/redis/v8 v8.2.3
+	github.com/stretchr/testify v1.6.1
 	// DI 套件
 	go.uber.org/dig v1.10.0
 )
