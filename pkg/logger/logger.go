@@ -26,14 +26,13 @@ func GetLogger() *logrus.Logger {
 	now := time.Now()
 	nowDate := now.Format("2006-01-02")
 
-	// 取得寫檔IO
-	src := getLogFileWriter(nowDate)
-
 	// 有物件的話重新設定 src
 	if Date == nowDate && Logger != nil {
-		Logger.SetOutput(src)
 		return Logger
 	}
+
+	// 取得寫檔IO
+	src := getLogFileWriter(nowDate)
 
 	// 实例化
 	logger := logrus.New()
